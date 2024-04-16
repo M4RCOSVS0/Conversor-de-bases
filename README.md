@@ -1,3 +1,3 @@
 # Coversor-de-bases
-um Poderoso conversor de bases para aprender os conceitos da materia de Arquitetura de Computadores
+Um Poderoso conversor de bases númericas para aprender os conceitos de conversão entre bases da matéria de Arquitetura de Computadores
 ainda não está finalizado!
