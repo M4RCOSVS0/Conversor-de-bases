@@ -8,8 +8,6 @@ using namespace std;
 
 //converte decimal em binário
 int* converteParaBinario(unsigned long int n, int* size = nullptr) {
-    //coverte decimal para binario
-    //cout << "O valor " << n << " em binario eh ";
     int i = 1, c = 0;
     while (i) {
         if (n >= pow(2, c)) {
@@ -47,7 +45,7 @@ int* converteParaBinario(unsigned long int n, int* size = nullptr) {
 int converteParaDecimal(int n,int b) {
     
     char numeroString[20];
-    sprintf(numeroString, "%d", n);
+    sprintf(numeroString, "%d", n);//formata e salva a string em um array de caracteres
     int tamanho = strlen(numeroString);
     int vet[tamanho],soma=0;
     for (int i = 0; i < tamanho; i++) {
@@ -64,13 +62,13 @@ int converteParaDecimal(int n,int b) {
 
 //função para coverter hexadecimal em decimal
 unsigned long int convertehexa(char *a){
-    char letras[] = {'a', 'b', 'c', 'd', 'e', 'f'};
+    char letras[] = {'A', 'B', 'C', 'D', 'E', 'F'};
     int valor[] = {10,11,12,13,14,15};
     int i = 0;
-    strrev(a);
+    strrev(a); //inverter uma string
     for (; i < 60 && a[i] != '\0'; i++);
     int vet[i];
-    memset(vet, 0, sizeof(vet));
+    memset(vet, 0, sizeof(vet));//preenche o vetor com 0
     
     for (int c = 0; c < i; c++) {
         for (int j = 0; j < 6; j++) {
@@ -86,7 +84,6 @@ unsigned long int convertehexa(char *a){
     int resultado = 0;
     for (int k = 0; k < tamanho; k++) {
         resultado += vet[k] * pow(16,k);
-      
     }
     
    return resultado;
@@ -133,8 +130,6 @@ void printBinary(unsigned long int n) {
     for (int i = (int) ceil((double)size/3) - 1; i >= 0; i--) {
         printf("%d", p[i]);
     }
-
-    
 
     free(binaryArray); // Não esqueça de liberar a memória alocada
 }
@@ -185,11 +180,16 @@ int main() {
         carregar(x);
         cin >> y;
         cout << "Digite seu numero " << endl;
+
         if (x == 4){
             scanf("%s",hexa);
+            for (int i = 0; hexa[i] != '\0'; i++) {
+                hexa[i] = toupper(hexa[i]);
+            }
         }else{
             cin >> num;
         }
+
         switch (x){
         case 1://binário para
             switch (y){
@@ -197,7 +197,7 @@ int main() {
                 printBinary(converteParaDecimal(num,2));
                 break;
             case 3://decimal
-                cout << "Em decimal "<< converteParaDecimal(num,2);
+                cout << "O valor em decimal eh "<< converteParaDecimal(num,2);
                 break;
             case 4://hexadecimal
                 decToHexa(converteParaDecimal(num,2));
@@ -213,7 +213,7 @@ int main() {
                 converteParaBinario(converteParaDecimal(num,8));
                 break;
             case 3://decimal
-                cout << "Em decimal "<< converteParaDecimal(num,8);
+                cout << "O valor em decimal eh "<< converteParaDecimal(num,8);
                 break;
             case 4://hexadecimal
                 decToHexa(converteParaDecimal(num,8));
@@ -226,14 +226,14 @@ int main() {
         case 3://decimal para
             switch (y){
             case 1://binario
-                cout << "O valor em Binario eh ";
+                cout << "O valor em binario eh ";
                 converteParaBinario(num);
                 break;
             case 2://octal
                 printBinary(num);
                 break;
             case 4://hexadecimal
-                cout << "O valor em Hexadecimal eh ";
+                cout << "O valor em hexadecimal eh ";
                 decToHexa(num);
                 break;
             default:
@@ -244,13 +244,13 @@ int main() {
         case 4://hexadecimal para
             switch (y){
             case 1://binario
-                converteParaBinario(convertehexa(hexa));
+                cout << "O valor em binario eh " << converteParaBinario(convertehexa(hexa));
                 break;
             case 2://octa
                 printBinary(convertehexa(hexa));
                 break;
             case 3://decimal
-                cout << "Em decimal "<< convertehexa(hexa);
+                cout << "O valor em decimal eh "<< convertehexa(hexa);
                 break;
             default:
                 cout << "ERRO! Valor invalido" << endl;
