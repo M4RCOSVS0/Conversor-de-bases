@@ -2,12 +2,14 @@
 #include <string.h>
 #include <cstdlib>
 #include <math.h>
+#include <vector>
+
 using namespace std;
 
-
+//converte decimal em binário
 int* converteParaBinario(unsigned long int n, int* size = nullptr) {
     //coverte decimal para binario
-    cout << "O valor " << n << " em binario eh ";
+    //cout << "O valor " << n << " em binario eh ";
     int i = 1, c = 0;
     while (i) {
         if (n >= pow(2, c)) {
@@ -41,11 +43,9 @@ int* converteParaBinario(unsigned long int n, int* size = nullptr) {
     
 }
 
-
-
-
+//converte qualquer base para decimal
 int converteParaDecimal(int n,int b) {
-    //converte qualquer base para decimal
+    
     char numeroString[20];
     sprintf(numeroString, "%d", n);
     int tamanho = strlen(numeroString);
@@ -62,6 +62,7 @@ int converteParaDecimal(int n,int b) {
     
 }
 
+//função para coverter hexadecimal em decimal
 unsigned long int convertehexa(char *a){
     char letras[] = {'a', 'b', 'c', 'd', 'e', 'f'};
     int valor[] = {10,11,12,13,14,15};
@@ -91,6 +92,7 @@ unsigned long int convertehexa(char *a){
    return resultado;
 }
 
+//função para converter decimal para octal
 void printBinary(unsigned long int n) {
     int size;
     int *binaryArray = converteParaBinario(n, &size);
@@ -107,30 +109,29 @@ void printBinary(unsigned long int n) {
     int c = -1, k = 0;
     int vetor[3] = {1,2,4};
     for (int i = size - 1; i >= 0; i--) {
-        c = ( c >= 2 ) ? 0 : ++c ;   
+
+        if(c >= 2) {
+            c = 0;
+        }else{
+            ++c;
+        }
+
         binaryArray[i] = binaryArray[i] * vetor[c];
-        //printf("\nNa posicao %d esta %d ",i,binaryArray[i]);
+
         if (c > 1){
             p[k] = (binaryArray[i] + binaryArray[i + 1] + binaryArray[i + 2] ) ;
-            //printf("\n%d %d %d\n",binaryArray[i] , binaryArray[i + 1] , binaryArray[i + 2]);
             k++;
         }else if (c > 0 && abs(size - (3 * (int) ceil((double)size/3))) == 1 && i == 0){
             p[k] = (binaryArray[i] + binaryArray[i + 1]) ;
-            //printf("\n%d %d %d\n",binaryArray[i] , binaryArray[i + 1] , binaryArray[i + 2]);
             k++;
         }else if (c == 0 && abs(size - (3 * (int) ceil((double)size/3))) == 2 && i == 0){
             p[k] = (binaryArray[i]) ;
-            //printf("\n%d %d %d\n",binaryArray[i] , binaryArray[i + 1] , binaryArray[i + 2]);
             k++;
         }
-        
-        
-        
-        
     }
-    printf("O valor %d em octal eh ",n);
+    printf("O valor %lu em octal eh ", n);
     for (int i = (int) ceil((double)size/3) - 1; i >= 0; i--) {
-    printf("%d", p[i]);
+        printf("%d", p[i]);
     }
 
     
@@ -138,48 +139,140 @@ void printBinary(unsigned long int n) {
     free(binaryArray); // Não esqueça de liberar a memória alocada
 }
 
-int converteParaHexa(unsigned long int n){
-    int size;
-    int *binarioBruto = converteParaBinario(n, &size);
-    
-    int recuo = size % 4;
-    size += recuo;
-    //cout << endl << size;
-    int *binarionovo = new int[size]();
-    for (int i = 0; i < size-recuo; i++){
-        binarionovo[i+recuo] = binarioBruto[i];
-    }
-    recuo = size/4;
-    for (int i = 0; i < size; i++){
-        cout << binarionovo[i];
-    }
-    delete[] binarioBruto;
-    binarioBruto = new int[recuo];
-    int c = 0;
-    int indice = 1;
-    for (int i = 0; i < size; i++){
-        for (int j = 0; i < 4; j++){
-            binarioBruto[i] += binarionovo[j] * i;
-            i += i;
+// Função para converter decimal para hexadecimal
+void decToHexa(int n) {
+    char hexaDeciNum[100];
+    int i = 0;
+    while (n != 0) {
+        int temp = 0;
+        temp = n % 16;
+        if (temp < 10) {
+            hexaDeciNum[i] = temp + 48;
+            i++;
+        } else {
+            hexaDeciNum[i] = temp + 55;
+            i++;
         }
-        i = 0;
-    }
-
-    for (int i = 0; i < recuo; i++){
-        binarioBruto[i];
+        n = n / 16;
     }
     
-    
-    
+    for (int j = i - 1; j >= 0; j--)
+        cout << hexaDeciNum[j];
+}
 
-    
+//função para mostrar as opções
+void carregar(int x){
+    vector<string> bases = {"Binario","Octal","Decimal","Hexadecimal"};
 
+    for (int i = 0; i < 4; i++)
+    {
+        if (x == i+1)
+            continue;
+        cout << i + 1 << " - " << bases[i]<< endl; 
+    }
 }
 
 int main() {
-    //unsigned long int value = 7589;
-    //printBinary(value);
-    converteParaHexa(47);
+    int x,y;
+    char r = 'n';
+    unsigned long int num;
+    char hexa[60];
+    do{
+        cout << "Digite qual a base do seu numero" << endl;
+        carregar(-1);
+        cin >> x;
+        cout << "Digite para qual base deseja converter" << endl;
+        carregar(x);
+        cin >> y;
+        cout << "Digite seu numero " << endl;
+        if (x == 4){
+            scanf("%s",hexa);
+        }else{
+            cin >> num;
+        }
+        switch (x){
+        case 1://binário para
+            switch (y){
+            case 2://octal
+                printBinary(converteParaDecimal(num,2));
+                break;
+            case 3://decimal
+                cout << "Em decimal "<< converteParaDecimal(num,2);
+                break;
+            case 4://hexadecimal
+                decToHexa(converteParaDecimal(num,2));
+                break;
+            default:
+                cout << "ERRO! Valor invalido" << endl;
+                break;
+            }
+            break;
+        case 2://octal para
+            switch (y){
+            case 1://binario
+                converteParaBinario(converteParaDecimal(num,8));
+                break;
+            case 3://decimal
+                cout << "Em decimal "<< converteParaDecimal(num,8);
+                break;
+            case 4://hexadecimal
+                decToHexa(converteParaDecimal(num,8));
+                break;
+            default:
+                cout << "ERRO! Valor invalido" << endl;
+                break;
+            }
+            break;
+        case 3://decimal para
+            switch (y){
+            case 1://binario
+                cout << "O valor em Binario eh ";
+                converteParaBinario(num);
+                break;
+            case 2://octal
+                printBinary(num);
+                break;
+            case 4://hexadecimal
+                cout << "O valor em Hexadecimal eh ";
+                decToHexa(num);
+                break;
+            default:
+                cout << "ERRO! Valor invalido" << endl;
+                break;
+            }
+            break;
+        case 4://hexadecimal para
+            switch (y){
+            case 1://binario
+                converteParaBinario(convertehexa(hexa));
+                break;
+            case 2://octa
+                printBinary(convertehexa(hexa));
+                break;
+            case 3://decimal
+                cout << "Em decimal "<< convertehexa(hexa);
+                break;
+            default:
+                cout << "ERRO! Valor invalido" << endl;
+                break;
+            }
+            break;
+        default:            
+            cout << "ERRO! Valor invalido" << endl;
+            break;
+        }
+
+    cout << endl << "Continuar?[S/N] ";
+    cin >> r;
+
+    system("cls");//limpa tela
+
+    }while (towlower(r) != 'n');
+    
+    
     return 0;
 }
+
+
+
 
